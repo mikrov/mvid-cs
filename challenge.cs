@@ -8,6 +8,24 @@ using System.IO;
 using System.Net;
 using System.Text;
 
+// MV-ID integration
+// -----------------
+// In order to use MV-ID's web services you must register user sessions using the SessionSecurity
+// web service method registerSessionUsage():
+//
+//   https://signon.mv-nordic.com/session-security/SessionSecurity
+//
+// This method is a challenge-response mechanism, that ensures that only a registered application
+// server can create a valid mv_session_id. It takes two arguments:
+// 1. The mv_session_hash recieved after successful login.
+// 2. The domain name registered for the application.
+//
+// The result of this call is a generated nonce value to salt the challenge response. Now there
+// are 3 values known by both MV-ID and the application server: mv_session_hash, nonse and the
+// key shared registed with the domain. The mv_session_id is calculated as follows:
+//
+//   $mv_session_id = md5($mv_session_hash.$nonce.$shared_key);
+
 namespace Mvid {
 	public class Challenge {
 		public static bool CommonCall(JsonWsp.Client cli, string method_name, JsonObject args_dict, ref JsonObject result, ref string error_message) {
