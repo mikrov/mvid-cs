@@ -55,7 +55,7 @@ namespace Mvid {
 			return s.ToString();
 	    }
 
-		public static bool registerSessionUsage (string mv_session_hash,string domain, string shared_key,ref string mv_session_id,ref string error_message)	{
+		public static bool registerSessionUsage (string mv_session_hash,string domain, string shared_key,ref string mv_session_id,ref string error_message, ref string nonce) {
 			JsonWsp.Client cli = new JsonWsp.Client("https://signon.mv-nordic.com/session-security/SessionSecurity/jsonwsp/description");
 			cli.SetViaProxy(true);
 			
@@ -73,11 +73,15 @@ namespace Mvid {
 					error_message = (string) method_result["res_msg"];
 					return false;
 				}
-				string nonce = (string) result["nonce"];
+				nonce = (string) result["nonce"];
 				mv_session_id = GetMD5Hash(mv_session_hash + nonce + shared_key);
 				return true;
 			}
 			return false;
+		}
+		public static bool registerSessionUsage (string mv_session_hash,string domain, string shared_key,ref string mv_session_id,ref string error_message) {
+			string nonce = "";
+			return registerSessionUsage(mv_session_hash,domain,shared_key,mv_session_id,error_message,nonce);
 		}
 	}
 }
