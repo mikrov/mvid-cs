@@ -62,7 +62,7 @@ namespace Mvid {
 			// Build arguments
 			JsonObject args_dict = new JsonObject();
 			args_dict.Add("mv_session_hash",mv_session_hash);
-			args_dict.Add("domain","mv-id-test.valhalla.local");
+			args_dict.Add("domain",domain);
 			// Call method
 			JsonObject result = new JsonObject();
 			bool success = CommonCall(cli,"registerSessionUsage",args_dict,ref result,ref error_message);
