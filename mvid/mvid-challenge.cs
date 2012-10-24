@@ -61,14 +61,14 @@ public class mvid_challenge
     }
     else if (response.GetJsonWspType() == JsonWsp.Response.JsonWspType.Fault)
     {
-        // Handle service fault here
-        error_message = "Service fault: " + response.GetServiceFault().GetString();
-        return false;
+      // Handle service fault here
+      error_message = "Service fault: " + response.GetServiceFault().GetString();
+      return false;
     }
     else
     {
-        error_message = "Service fault";
-        return false;
+      error_message = "Service fault";
+      return false;
     }
   }
 

@@ -1,4 +1,4 @@
-mvid-cs
+﻿mvid-cs
 ========
 
 This is the official MV-ID Integration library.
@@ -17,7 +17,7 @@ Installation
 ------------
 1. Copy the "mvid" folder into the "App_code" folder of your project.
 2. Edit the "mvid/config/mvid-config.cs" file, in particular you need to edit the "shared_key" and "domain" values
-3. Include references "Jayrock.dll, Jayrock.Json.dll, JsonWsp.dll and mvid.dll"
+3. Include references "Jayrock.dll, Jayrock.Json.dll and JsonWsp.dll"
 
 Example
 -------

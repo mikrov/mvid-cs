@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web;
-using System.Web.Resources;
 using System.Configuration;
 using System.Net;
 using System.Collections.Specialized;
+using System.Collections;
 
 public class mvid_handler
 {
@@ -15,12 +15,12 @@ public class mvid_handler
     mvid_challenge mvc = new mvid_challenge();
     mv_session_id = "";
     string error_message = "";
-    string mvid_app_domain = mvidconfig.challenge["domain"].ToString();
-    string mvid_shared_key = mvidconfig.challenge["shared_key"].ToString();
-    string mvid_redirect_on_success = mvidconfig.challenge["redirect_on_success"].ToString();
-    string mvid_redirect_on_failure = mvidconfig.challenge["redirect_on_failure"].ToString();
-    string mvid_storage_type = mvidconfig.storage["type"].ToString();
-    string mvid_storage_name = mvidconfig.storage["name"].ToString();
+    string mvid_app_domain = ((Hashtable)((Hashtable)mvidconfig.mvid_config["mvid"])["challenge"])["domain"].ToString();
+    string mvid_shared_key = ((Hashtable)((Hashtable)mvidconfig.mvid_config["mvid"])["challenge"])["shared_key"].ToString();
+    string mvid_redirect_on_success = ((Hashtable)((Hashtable)mvidconfig.mvid_config["mvid"])["challenge"])["redirect_on_success"].ToString();
+    string mvid_redirect_on_failure = ((Hashtable)((Hashtable)mvidconfig.mvid_config["mvid"])["challenge"])["redirect_on_failure"].ToString();
+    string mvid_storage_type = ((Hashtable)((Hashtable)mvidconfig.mvid_config["mvid"])["storage"])["type"].ToString();
+    string mvid_storage_name = ((Hashtable)((Hashtable)mvidconfig.mvid_config["mvid"])["storage"])["name"].ToString();
 
     // Not sure what storage_class is!
     MVID_SessionStorage storage_class = null;
@@ -76,15 +76,15 @@ public class mvid_handler
     {
       if (storage_class == null)
       {
-		  if (mvid_redirect_on_failure != null)
-		  {
-			  HttpContext.Current.Response.Redirect(mvid_redirect_on_failure + "?error_message=" + HttpUtility.UrlEncode(error_message));
-		  }
-		  else
-		  {
-			  HttpContext.Current.Response.Write("Error: " + error_message);
-			  Environment.Exit(-1);
-		  }
+        if (mvid_redirect_on_failure != null)
+        {
+          HttpContext.Current.Response.Redirect(mvid_redirect_on_failure + "?error_message=" + HttpUtility.UrlEncode(error_message));
+        }
+        else
+        {
+          HttpContext.Current.Response.Write("Error: " + error_message);
+          Environment.Exit(-1);
+        }
       }
       else
       {
