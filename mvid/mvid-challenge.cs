@@ -6,6 +6,7 @@ using JsonWsp;
 using Jayrock.Json;
 using Jayrock.Json.Conversion;
 using System.Security.Cryptography;
+using System.Collections.Generic;
 
 public class mvid_challenge
 {
@@ -27,15 +28,17 @@ public class mvid_challenge
   //
   //   mv_session_id = md5(mv_session_hash + nonce + shared_key);
 
-  public Boolean registerSessionUsage(string mv_session_hash,string domain,string shared_key,ref string mv_session_id,ref string error_message)
+  public Boolean registerSessionUsage(string mv_session_hash,string domain,string shared_key,ref string mv_session_id,ref string error_message,string serviceUrl="",Dictionary<String,String> cookies=null)
   {
     // Connect to MV-ID's session security service to register a valid application session
-    Client client = new Client("https://signon.mv-nordic.com/session-security/SessionSecurity/jsonwsp/description");
+    Client client = new Client(serviceUrl != "" ? serviceUrl : "https://signon.mv-nordic.com/session-security/SessionSecurity/jsonwsp/description",cookies);
     client.SetViaProxy(true);
+
     // Build arguments
     JsonObject args_dict = new JsonObject();
     args_dict.Add("mv_session_hash", mv_session_hash);
     args_dict.Add("domain", domain);
+
     // Send registration request
     Response response = client.CallMethod("registerSessionUsage",args_dict);
     if(response.GetJsonWspType() == Response.JsonWspType.Response && response.GetCallResult() == Response.CallResult.Success) {
